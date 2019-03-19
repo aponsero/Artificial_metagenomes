@@ -55,39 +55,51 @@ def get_group(vec):
     vec2 = np.array(list2)
     group = np.add(vec, vec2)
     groupsum=np.sum(group)
-    print(groupsum)
+    #print(groupsum)
     norm_group=group/groupsum
-    print(np.sum(norm_group))
+    #print(np.sum(norm_group))
     return norm_group
+
+def myprint(vec, names, mymeta, outseed):
+
+    for i in range(mymeta):
+        temp=(vec[i, :])
+        cpt=0
+        outfile=outseed+"_meta_"+str(i+1)+".txt"
+        fout = open(outfile, 'w')
+        for i in np.nditer(temp):
+            fout.write(names[cpt]+"\t"+str(float(i))+"\n")
+            cpt+=1
 
 def main():
     args = get_args()
-    outfile= args.output
+    outdir= args.output
     myprofile= args.profile
     mymeta= args.meta
     mygroup= args.groups
     my_vec = list()
-
-    fout = open(outfile, 'w')
+    my_names = list()
+    np.set_printoptions(precision=5,suppress=True)
 
     fin = open(myprofile, "r")
     for x in fin:
         name, abundance = x.split("\t")
         my_vec.append(float(abundance.strip()))
-
-    vec = np.array(my_vec)
-    #print(np.sum(vec))
+        my_names.append(str(name))
+        
+    vec = np.array(my_vec) 
 
     if mygroup==1:
-        new_vec = get_meta(vec, mymeta)
-        print(new_vec)
-        print(new_vec.shape)
-        #print(np.sum(new_vec))
+        new_vec = get_meta(vec, mymeta) 
+        outseed=outdir+"/vec_group_1"
+        myprint(new_vec, my_names, mymeta, outseed)
+ 
     else :
         for x in range(mygroup):
             new_group=get_group(vec)
             new_vec=get_meta(new_group, mymeta)
-            print(new_vec)
+            outseed=outdir+"/vec_group_"+str(x+1)
+            myprint(new_vec, my_names, mymeta, outseed) 
 
 
 if __name__ == "__main__":main()

@@ -19,10 +19,15 @@ echo "Started `date`">>"$LOG"
 echo "Host `hostname`">>"$LOG"
 
 #load python environment
-source activate python2
+source activate sklearn_3
 
 # run script
 RUN="$WORKER_DIR/generate_vectors.py"
 
-python $RUN $PROFILE $NB_GROUPS $NB_METAGENOMES
+OUT="$RESULT_DIR/profiles"
+if [ ! -d "$OUT" ] ; then
+    mkdir $OUT
+fi
+
+python $RUN $PROFILE $NB_GROUPS $NB_METAGENOMES $OUT
 echo "Finished `date`">>"$LOG"
