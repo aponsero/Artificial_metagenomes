@@ -26,7 +26,7 @@ def get_meta(vec, nb):
         list2=list()
         for i in np.nditer(vec):
             #print(i, end=' ')
-            temp=abs(float(random.gauss(0, i)))
+            temp=abs(float(np.random.normal(0, i, 1)))
             list2.append(float(temp))
 
         vec2 = np.array(list2)
@@ -49,11 +49,10 @@ def get_group(vec):
     list2=list()
     for i in np.nditer(vec):
         #print(i, end=' ')
-        temp=abs(float(random.gauss(1, i)))
-        list2.append(float(temp))
+        temp=abs(float(np.random.normal(0, i, 1)))
+        list2.append(float(temp*i))
 
-    vec2 = np.array(list2)
-    group = np.add(vec, vec2)
+    group = np.array(list2)
     groupsum=np.sum(group)
     #print(groupsum)
     norm_group=group/groupsum
@@ -97,6 +96,7 @@ def main():
     else :
         for x in range(mygroup):
             new_group=get_group(vec)
+            print(new_group)
             new_vec=get_meta(new_group, mymeta)
             outseed=outdir+"/vec_group_"+str(x+1)
             myprint(new_vec, my_names, mymeta, outseed) 
