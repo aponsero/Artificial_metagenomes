@@ -49,7 +49,7 @@ def get_group(vec):
     list2=list()
     for i in np.nditer(vec):
         #print(i, end=' ')
-        temp=abs(float(np.random.normal(0, i, 1)))
+        temp=abs(float(np.random.normal(1, i, 1)))
         list2.append(float(temp*i))
 
     group = np.array(list2)
