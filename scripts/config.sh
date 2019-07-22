@@ -3,6 +3,7 @@ export CWD=$PWD
 export GEMSIM=
 # where the dataset to prepare is
 export PROFILE=
+export VEC=
 export GENOMES_DIR=
 export RESULT_DIR=
 # parameters

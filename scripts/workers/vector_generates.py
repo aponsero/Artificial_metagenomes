@@ -9,8 +9,10 @@ from sklearn import preprocessing
 
 def get_args():
   parser = argparse.ArgumentParser(description='generates vectors for community simulation')
-  parser.add_argument('-f', '--profile', help='profile file path',
-    type=str, metavar='PROFILE', required=True)
+  parser.add_argument('-f', '--genomes', help='genome file path',
+    type=str, metavar='GENOMES', required=True)
+  parser.add_argument('-v', '--vector', help='vector list file path',
+    type=str, metavar='VECTOR', required=True)
   parser.add_argument('-g', '--groups', help='nb of groups',
     type=int, metavar='GROUPS', required=True)
   parser.add_argument('-m', '--meta', help='nb of metagenomes by groups',
@@ -25,7 +27,7 @@ def get_meta(vec, nb):
     for x in range(nb):
         list2=list()
         for i in np.nditer(vec):
-            #print(i, end=' ')
+            print(i, end=' ')
             temp=abs(float(np.random.normal(0, i, 1)))
             list2.append(float(temp))
 
@@ -73,25 +75,34 @@ def myprint(vec, names, mymeta, outseed):
 def main():
     args = get_args()
     outdir= args.output
-    myprofile= args.profile
+    mygenomes= args.genomes
+    myabundance=args.vector
     mymeta= args.meta
     mygroup= args.groups
     my_vec = list()
     my_names = list()
     np.set_printoptions(precision=5,suppress=True)
 
-    fin = open(myprofile, "r")
+    fin = open(myabundance, "r")
     for x in fin:
-        name, abundance = x.split("\t")
-        my_vec.append(float(abundance.strip()))
-        my_names.append(str(name))
-        
-    vec = np.array(my_vec) 
+        line=x.strip()
+        my_vec = line.split(",")
+    vec = np.array( my_vec)
+    vec=vec.astype(np.float)
+    print(vec)
+
+    fin2 = open(mygenomes, "r")
+    for x in fin2:
+        my_names.append(x.strip())
+    names=np.array(my_names)
+    print(names) 
 
     if mygroup==1:
+        print("creating one unique group")
         new_vec = get_meta(vec, mymeta) 
         outseed=outdir+"/vec_group_1"
-        myprint(new_vec, my_names, mymeta, outseed)
+        np.random.shuffle(names)
+        myprint(new_vec, names, mymeta, outseed)
  
     else :
         for x in range(mygroup):
@@ -99,7 +110,8 @@ def main():
             print(new_group)
             new_vec=get_meta(new_group, mymeta)
             outseed=outdir+"/vec_group_"+str(x+1)
-            myprint(new_vec, my_names, mymeta, outseed) 
+            np.random.shuffle(names)
+            myprint(new_vec, names, mymeta, outseed) 
 
 
 if __name__ == "__main__":main()

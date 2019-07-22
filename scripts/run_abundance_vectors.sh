@@ -29,5 +29,5 @@ if [ ! -d "$OUT" ] ; then
     mkdir $OUT
 fi
 
-python $RUN $PROFILE $NB_GROUPS $NB_METAGENOMES $OUT
+python $RUN -f $PROFILE -v $VEC -g $NB_GROUPS -m $NB_METAGENOMES -o $OUT
 echo "Finished `date`">>"$LOG"
