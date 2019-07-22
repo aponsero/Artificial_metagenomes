@@ -2,15 +2,16 @@ export CWD=$PWD
 # where programs are
 export GEMSIM=
 # where the dataset to prepare is
-export PROFILE=
-export VEC=
-export GENOMES_DIR=
-export RESULT_DIR=
+export PROFILE="/rsgrps/bhurwitz/alise/my_data/De_Novo_meta/Simulated_datasets/SimSetQ_genomes.txt"
+export VEC="/rsgrps/bhurwitz/alise/my_data/De_Novo_meta/Simulated_datasets/abundance_vec2_SQ.txt"
+export GENOMES_DIR="../../my_data/De_Novo_meta/Simulated_datasets/orginal_genomes" #GemSim won't work if this is not relative to $GEMSIM
+export RESULT_DIR="/rsgrps/bhurwitz/alise/my_data/De_Novo_meta/Simulated_datasets/test_cluster"
+export REL_OUT="../../my_data/De_Novo_meta/Simulated_datasets/test_cluster" #output dir relative to $GEMSIM
 # parameters
-export NB_READS= #nb reads to generate
-export NB_METAGENOMES= #nb metagenomes per groups to generate
-export MODEL= #error/legth model to use
-export NB_GROUPS= # nb of groups to generate
+export NB_READS=5000 #nb reads to generate
+export NB_METAGENOMES=10 #nb metagenomes per groups to generate
+export MODEL="models/ill100v4_p.gzip" #error/legth model to use
+export NB_GROUPS=3 # nb of groups to generate
 #export SD= #T or F for custom SD
 #place to store the scripts
 export SCRIPT_DIR="$PWD/scripts"

@@ -22,7 +22,7 @@ echo "Host `hostname`">>"$LOG"
 source activate sklearn_3
 
 # run script
-RUN="$WORKER_DIR/generate_vectors.py"
+RUN="$WORKER_DIR/vector_generates.py"
 
 OUT="$RESULT_DIR/profiles"
 if [ ! -d "$OUT" ] ; then
@@ -30,4 +30,8 @@ if [ ! -d "$OUT" ] ; then
 fi
 
 python $RUN -f $PROFILE -v $VEC -g $NB_GROUPS -m $NB_METAGENOMES -o $OUT
+
+cd $OUT
+find . -type f -name "*.txt" > files.list
+
 echo "Finished `date`">>"$LOG"

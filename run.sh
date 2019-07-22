@@ -11,8 +11,8 @@ if [[ ! -f "$PROFILE" ]]; then
     exit 1
 fi
 
-if [[ ! -d "$GENOME_DIR" ]]; then
-  echo "$GENOME_DIR does not exist. Please provide the path to folder containing the genomes to process. Job terminated."
+if [[ ! -d "$GENOMES_DIR" ]]; then
+  echo "$GENOMES_DIR does not exist. Please provide the path to folder containing the genomes to process. Job terminated."
   exit 1
 fi
 
@@ -38,13 +38,10 @@ export STDOUT_DIR="$SCRIPT_DIR/out/$PROG"
 
 init_dir "$STDERR_DIR" "$STDOUT_DIR"
 
-export NUM_FILE=$(wc -l < "$FILE_LIST_R1")
-
-
 echo "launching $SCRIPT_DIR/run_abundance_vectors.sh "
 
 
-JOB_ID=`qsub $ARGS -v PROFILE,NB_METAGENOMES,NB_GROUPS,RESULT_DIR,VEC,STDERR_DIR,STDOUT_DIR -N run_vectors -e "$STDERR_DIR" -o "$STDOUT_DIR"  $SCRIPT_DIR/run_abundance_vectors.sh.sh`
+JOB_ID=`qsub $ARGS -v PROFILE,NB_METAGENOMES,NB_GROUPS,RESULT_DIR,VEC,WORKER_DIR,STDERR_DIR,STDOUT_DIR -N run_vectors_cluster -e "$STDERR_DIR" -o "$STDOUT_DIR"  $SCRIPT_DIR/run_abundance_vectors.sh`
 
 if [ "${JOB_ID}x" != "x" ]; then
     echo Job: \"$JOB_ID\"
@@ -69,7 +66,7 @@ export SPLIT_LIST="$RESULT_DIR/profiles/files.list"
 
 echo "launching $SCRIPT_DIR/run_GemSim.sh "
 
-JOB_ID=`qsub $ARGS -v SPLIT_LIST,GENOMES_DIR,NB_READS,MODEL,REL_OUT,WORKER_DIR,STDERR_DIR2,STDOUT_DIR2 -N run_gemsim -e "$STDERR_DIR2" -o "$STDOUT_DIR2" -W depend=afterok:$PREV_JOB_ID -J 1-$NB_METAGENOMES $SCRIPT_DIR/run_GemSim.sh`
+JOB_ID=`qsub $ARGS -v SPLIT_LIST,GENOMES_DIR,NB_READS,MODEL,REL_OUT,WORKER_DIR,STDERR_DIR2,STDOUT_DIR2 -N run_gemsim_cluster -e "$STDERR_DIR2" -o "$STDOUT_DIR2" -W depend=afterok:$PREV_JOB_ID -J 1-$NB_METAGENOMES $SCRIPT_DIR/run_GemSim.sh`
 
 if [ "${JOB_ID}x" != "x" ]; then
     echo Job: \"$JOB_ID\"
